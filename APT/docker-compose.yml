@@ -1,0 +1,62 @@
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - backend
+
+  mysql-history:
+    image: mysql:8.0
+    container_name: mysql-history
+    environment:
+      MYSQL_USER: Test
+      MYSQL_PASSWORD: Test@123
+      MYSQL_DATABASE: historydb
+      MYSQL_ROOT_PASSWORD: rootabc123
+    ports:
+      - "3308:3306"
+    networks:
+      - backend
+        
+  dog-service:
+    build:
+      context: ./Dog
+    container_name: dog-service
+    ports:
+      - "8081:8080"
+    environment:
+      MONGODB_PORT: 27017
+      MONGODB_HOST: mongodb
+    depends_on:
+      - mongodb
+    networks:
+      - backend
+
+  history-service:
+    build:
+      context: ./History
+    container_name: history-service
+    ports:
+      - "8082:8080"
+    environment:
+      MYSQL_DB_HOST: mysql-history
+      MYSQL_DB_PORT: 3306
+      MYSQL_DB_DATABASE: historydb
+      MYSQL_DB_USER: root
+      MYSQL_DB_PASSWORD: rootabc123
+      DOG_SERVICE_BASEURL: dog-service:8081
+    depends_on:
+      - mysql-history
+      - dog-service
+    networks:
+      - backend
+
+volumes:
+  mongo_data:
+
+networks:
+  backend:
