@@ -1,0 +1,13 @@
+services:
+  persondb:
+    image: mongo:6.0
+    container_name: persondb
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_DATABASE: persondb
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
