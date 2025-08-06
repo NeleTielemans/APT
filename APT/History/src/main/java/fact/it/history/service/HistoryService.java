@@ -18,10 +18,22 @@ public class HistoryService {
     private final HistoryRepository historyRepository;
     private final WebClient webClient;
 
+    @Value("${personservice.baseurl}")
+    private String personServiceBaseUrl;
     @Value("${dogservice.baseurl}")
     private String dogServiceBaseUrl;
 
     public String createNewHistory(HistoryRequest historyRequest) {
+
+        PersonResponse[] personResponseArray = webClient.get()
+                .uri("http://" + personServiceBaseUrl + "/api/person",
+                        uriBuilder -> uriBuilder.queryParam("id", historyRequest.getPersonId()).build())
+                .retrieve()
+                .bodyToMono(PersonResponse[].class)
+                .block();
+        if (personResponseArray == null || personResponseArray.length == 0) {
+            return "Person not found";
+        }
 
         DogResponse[] dogResponseArray = webClient.get()
                 .uri("http://" + dogServiceBaseUrl + "/api/dog",

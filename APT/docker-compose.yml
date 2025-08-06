@@ -73,9 +73,11 @@ services:
       MYSQL_DB_USER: root
       MYSQL_DB_PASSWORD: rootabc123
       DOG_SERVICE_BASEURL: dog-service:8080
+      PERSON_SERVICE_BASEURL: person-service:8080
     depends_on:
       - mysql-history
       - dog-service
+      - person-service
     networks:
       - backend
 
