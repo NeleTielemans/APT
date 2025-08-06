@@ -1,0 +1,13 @@
+services:
+  competitiondb:
+    image: mongo:6.0
+    container_name: competitiondb
+    ports:
+      - "27019:27017"
+    environment:
+      MONGO_INITDB_DATABASE: competitiondb
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
