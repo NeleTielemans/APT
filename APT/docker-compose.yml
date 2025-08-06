@@ -48,7 +48,7 @@ services:
       MYSQL_DB_DATABASE: historydb
       MYSQL_DB_USER: root
       MYSQL_DB_PASSWORD: rootabc123
-      DOG_SERVICE_BASEURL: dog-service:8081
+      DOG_SERVICE_BASEURL: dog-service:8080
     depends_on:
       - mysql-history
       - dog-service
