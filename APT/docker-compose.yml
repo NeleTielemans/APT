@@ -1,13 +1,23 @@
 services:
-  mongodb:
+  dogdb:
     image: mongo:6.0
-    container_name: mongodb
+    container_name: dogdb
     ports:
       - "27017:27017"
     volumes:
-      - mongo_data:/data/db
+      - dog_mongo_data:/data/db
     networks:
       - backend
+  
+  persondb:
+    image: mongo:6.0
+    container_name: persondb
+    ports:
+      - "27018:27017"
+    volumes:
+      - person_mongo_data:/data/db
+    networks:
+      - backend    
 
   mysql-history:
     image: mysql:8.0
@@ -30,9 +40,23 @@ services:
       - "8081:8080"
     environment:
       MONGODB_PORT: 27017
-      MONGODB_HOST: mongodb
+      MONGODB_HOST: dogdb
     depends_on:
-      - mongodb
+      - dogdb
+    networks:
+      - backend
+
+  person-service:
+    build:
+      context: ./Person
+    container_name: person-service
+    ports:
+      - "8083:8080"
+    environment:
+      MONGODB_PORT: 27017
+      MONGODB_HOST: persondb   
+    depends_on:
+      - persondb
     networks:
       - backend
 
@@ -56,7 +80,8 @@ services:
       - backend
 
 volumes:
-  mongo_data:
+  person_mongo_data:
+  dog_mongo_data:
 
 networks:
   backend:
