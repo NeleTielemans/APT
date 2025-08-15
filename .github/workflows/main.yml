@@ -24,7 +24,5 @@ jobs:
 
       - name: Build and run Docker Compose
         run: |
-          docker compose -f APT/docker-compose.yml build \
-            --build-arg GOOGLE_CLIENTID=${{ secrets.GOOGLE_CLIENTID }} \
-            --build-arg GOOGLE_CLIENTSECRET=${{ secrets.GOOGLE_CLIENTSECRET }}
+          docker compose -f APT/docker-compose.yml build --build-arg GOOGLE_CLIENTID=${{ secrets.GOOGLE_CLIENTID }} --build-arg GOOGLE_CLIENTSECRET=${{ secrets.GOOGLE_CLIENTSECRET }}
           docker compose -f APT/docker-compose.yml up -d
