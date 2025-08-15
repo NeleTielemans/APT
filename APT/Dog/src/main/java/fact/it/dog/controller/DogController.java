@@ -34,6 +34,10 @@ public class DogController {
         return dogService.getAllDogs();
     }
 
-
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public DogResponse updateDog(@PathVariable String id, @RequestBody DogRequest dogRequest) {
+        return dogService.updateDog(id, dogRequest);
+    }
 }
 
