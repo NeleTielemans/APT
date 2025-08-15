@@ -1,0 +1,118 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: INFO
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
+    reactor.netty: INFO
+    org.springframework.security: TRACE
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENTID}
+            client-secret: ${GOOGLE_CLIENTSECRET}
+            scope: openid,profile,email
+      resourceserver:
+        jwt:
+          issuer-uri: https://accounts.google.com
+          jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
+  cloud:
+    gateway:
+      routes:
+        # ===== DOG SERVICE =====
+        - id: dog-service-create
+          uri: http://${DOG_SERVICE_BASEURL:localhost:8082}
+          predicates:
+            - Path=/dogs
+            - Method=POST
+          filters:
+            - SetPath=/api/dog
+
+        - id: dog-service-get-by-id
+          uri: http://${DOG_SERVICE_BASEURL:localhost:8082}
+          predicates:
+            - Path=/dogs
+            - Method=GET
+          filters:
+            - SetPath=/api/dog
+
+        - id: dog-service-get-all
+          uri: http://${DOG_SERVICE_BASEURL:localhost:8082}
+          predicates:
+            - Path=/dogs/all
+            - Method=GET
+          filters:
+            - SetPath=/api/dog/all
+
+        # ===== PERSON SERVICE =====
+        - id: person-service-create
+          uri: http://${PERSON_SERVICE_BASEURL:localhost:8083}
+          predicates:
+            - Path=/persons
+            - Method=POST
+          filters:
+            - SetPath=/api/person
+
+        - id: person-service-get-by-id
+          uri: http://${PERSON_SERVICE_BASEURL:localhost:8083}
+          predicates:
+            - Path=/persons
+            - Method=GET
+          filters:
+            - SetPath=/api/person
+
+        - id: person-service-get-all
+          uri: http://${PERSON_SERVICE_BASEURL:localhost:8083}
+          predicates:
+            - Path=/persons/all
+            - Method=GET
+          filters:
+            - SetPath=/api/person/all
+
+        # ===== COMPETITION SERVICE =====
+        - id: competition-service-create
+          uri: http://${COMPETITION_SERVICE_BASEURL:localhost:8084}
+          predicates:
+            - Path=/competitions
+            - Method=POST
+          filters:
+            - SetPath=/api/competition
+
+        - id: competition-service-get-by-id
+          uri: http://${COMPETITION_SERVICE_BASEURL:localhost:8084}
+          predicates:
+            - Path=/competitions
+            - Method=GET
+          filters:
+            - SetPath=/api/competition
+
+        - id: competition-service-get-all
+          uri: http://${COMPETITION_SERVICE_BASEURL:localhost:8084}
+          predicates:
+            - Path=/competitions/all
+            - Method=GET
+          filters:
+            - SetPath=/api/competition/all
+
+        # ===== HISTORY SERVICE =====
+        - id: history-service-create
+          uri: http://${HISTORY_SERVICE_BASEURL:localhost:8085}
+          predicates:
+            - Path=/histories
+            - Method=POST
+          filters:
+            - SetPath=/api/history
+
+        - id: history-service-get-all
+          uri: http://${HISTORY_SERVICE_BASEURL:localhost:8085}
+          predicates:
+            - Path=/histories
+            - Method=GET
+          filters:
+            - SetPath=/api/history
