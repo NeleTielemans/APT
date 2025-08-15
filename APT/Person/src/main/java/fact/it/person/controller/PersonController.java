@@ -34,5 +34,9 @@ public class PersonController {
         return personService.getAllPersons();
     }
 
-
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public PersonResponse updatePerson(@PathVariable String id, @RequestBody PersonRequest personRequest) {
+        return personService.updatePerson(id, personRequest);
+    }
 }

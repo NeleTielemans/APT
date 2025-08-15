@@ -5,7 +5,9 @@ import fact.it.person.dto.PersonResponse;
 import fact.it.person.model.Person;
 import fact.it.person.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -16,6 +18,21 @@ public class PersonService {
     PersonService(PersonRepository personRepository) {
         this.personRepository = personRepository;
         System.out.println("person service here");
+    }
+
+    public PersonResponse updatePerson(String id, PersonRequest personRequest) {
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Person not found with id: " + id
+                ));
+
+        person.setFirstName(personRequest.getFirstName());
+        person.setLastName(personRequest.getLastName());
+        person.setEmail(personRequest.getEmail());
+
+        Person updatedPerson = personRepository.save(person);
+
+        return mapToPersonResponse(updatedPerson);
     }
 
     public List<PersonResponse> getAllPersons() {

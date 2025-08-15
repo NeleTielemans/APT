@@ -83,6 +83,14 @@ spring:
           filters:
             - SetPath=/api/person/all
 
+        - id: dog-service-update
+          uri: http://${PERSON_SERVICE_BASEURL:localhost:8082}
+          predicates:
+            - Path=/persons/{id}
+            - Method=PUT
+          filters:
+              - SetPath=/api/person/{id}
+
         # ===== COMPETITION SERVICE =====
         - id: competition-service-create
           uri: http://${COMPETITION_SERVICE_BASEURL:localhost:8084}
