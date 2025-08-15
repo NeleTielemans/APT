@@ -118,6 +118,9 @@ services:
       PERSON_SERVICE_BASEURL: person-service:8080
       COMPETITION_SERVICE_BASEURL: competition-service:8080
       HISTORY_SERVICE_BASEURL: history-service:8080
+      GOOGLE_CLIENTID: *
+      GOOGLE_CLIENTSECRET: *
+
     depends_on:
       - dog-service
       - person-service
