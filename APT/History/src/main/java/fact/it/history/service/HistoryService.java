@@ -22,8 +22,20 @@ public class HistoryService {
     private String personServiceBaseUrl;
     @Value("${dogservice.baseurl}")
     private String dogServiceBaseUrl;
+    @Value("${competitionservice.baseurl}")
+    private String competitionServiceBaseUrl;
 
     public String createNewHistory(HistoryRequest historyRequest) {
+
+        CompetitionResponse[] competitionResponses = webClient.get()
+                .uri("http://" + competitionServiceBaseUrl + "/api/competition",
+                        uriBuilder -> uriBuilder.queryParam("id", historyRequest.getCompetitionId()).build())
+                .retrieve()
+                .bodyToMono(CompetitionResponse[].class)
+                .block();
+        if (competitionResponses == null || competitionResponses.length == 0) {
+            return "Competition not found";
+        }
 
         PersonResponse[] personResponseArray = webClient.get()
                 .uri("http://" + personServiceBaseUrl + "/api/person",
