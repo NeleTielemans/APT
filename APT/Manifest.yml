@@ -446,10 +446,9 @@ metadata:
   name: api-gateway
   namespace: dogcompetitions
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: api-gateway
   ports:
     - port: 8080
       targetPort: 8080
-      nodePort: 30080
