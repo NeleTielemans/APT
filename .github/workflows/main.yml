@@ -29,3 +29,8 @@ jobs:
             --build-arg GOOGLE_CLIENTID=${{ secrets.GOOGLE_CLIENTID }} \
             --build-arg GOOGLE_CLIENTSECRET=${{ secrets.GOOGLE_CLIENTSECRET }}
           docker compose up -d
+      
+      - name: Push images to Docker Hub
+        run: |
+          cd APT
+          docker compose push
