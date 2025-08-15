@@ -1,0 +1,16 @@
+name: Test Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Test Docker Compose
+        run: |
+          docker compose -f APT/docker-compose.yml build
