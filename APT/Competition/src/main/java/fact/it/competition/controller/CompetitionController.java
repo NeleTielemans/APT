@@ -34,5 +34,9 @@ public class CompetitionController {
         return competitionService.getAllCompetitions();
     }
 
-
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CompetitionResponse updateCompetitionById(@PathVariable String id, @RequestBody CompetitionRequest competitionRequest) {
+        return competitionService.updateCompetition(id, competitionRequest);
+    }
 }

@@ -5,7 +5,9 @@ import fact.it.competition.dto.CompetitionResponse;
 import fact.it.competition.model.Competition;
 import fact.it.competition.repository.CompetitionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -41,5 +43,20 @@ public class CompetitionService {
                 .location(competition.getLocation())
                 .description(competition.getDescription())
                 .build();
+    }
+
+    public CompetitionResponse updateCompetition(String id, CompetitionRequest competitionRequest) {
+        Competition competition = competitionRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Competition not found with id: " + id
+                ));
+
+        competition.setName(competitionRequest.getName());
+        competition.setLocation(competitionRequest.getLocation());
+        competition.setDescription(competitionRequest.getDescription());
+
+        competitionRepository.save(competition);
+
+        return mapToCompetitionResponse(competition);
     }
 }

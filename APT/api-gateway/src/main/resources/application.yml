@@ -83,7 +83,7 @@ spring:
           filters:
             - SetPath=/api/person/all
 
-        - id: dog-service-update
+        - id: person-service-update
           uri: http://${PERSON_SERVICE_BASEURL:localhost:8082}
           predicates:
             - Path=/persons/{id}
@@ -115,6 +115,14 @@ spring:
             - Method=GET
           filters:
             - SetPath=/api/competition/all
+
+        - id: competition-service-update
+          uri: http://${COMPETITION_SERVICE_BASEURL:localhost:8082}
+          predicates:
+            - Path=/competitions/{id}
+            - Method=PUT
+          filters:
+            - SetPath=/api/competition/{id}
 
         # ===== HISTORY SERVICE =====
         - id: history-service-create
