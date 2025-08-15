@@ -110,6 +110,9 @@ services:
   api-gateway:
     build:
       context: ./api-gateway   # path to your API Gateway project
+      args:
+        GOOGLE_CLIENTID: ${GOOGLE_CLIENTID}
+        GOOGLE_CLIENTSECRET: ${GOOGLE_CLIENTSECRET}
     container_name: api-gateway
     ports:
       - "8080:8080"  # Expose gateway on host's port 8080
@@ -118,8 +121,8 @@ services:
       PERSON_SERVICE_BASEURL: person-service:8080
       COMPETITION_SERVICE_BASEURL: competition-service:8080
       HISTORY_SERVICE_BASEURL: history-service:8080
-      GOOGLE_CLIENTID: *
-      GOOGLE_CLIENTSECRET: *
+      GOOGLE_CLIENTID: ${GOOGLE_CLIENTID}
+      GOOGLE_CLIENTSECRET: ${GOOGLE_CLIENTSECRET}
 
     depends_on:
       - dog-service
