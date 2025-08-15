@@ -26,35 +26,9 @@ public class HistoryService {
     private String competitionServiceBaseUrl;
 
     public String createNewHistory(HistoryRequest historyRequest) {
-
-        CompetitionResponse[] competitionResponses = webClient.get()
-                .uri("http://" + competitionServiceBaseUrl + "/api/competition",
-                        uriBuilder -> uriBuilder.queryParam("id", historyRequest.getCompetitionId()).build())
-                .retrieve()
-                .bodyToMono(CompetitionResponse[].class)
-                .block();
-        if (competitionResponses == null || competitionResponses.length == 0) {
-            return "Competition not found";
-        }
-
-        PersonResponse[] personResponseArray = webClient.get()
-                .uri("http://" + personServiceBaseUrl + "/api/person",
-                        uriBuilder -> uriBuilder.queryParam("id", historyRequest.getPersonId()).build())
-                .retrieve()
-                .bodyToMono(PersonResponse[].class)
-                .block();
-        if (personResponseArray == null || personResponseArray.length == 0) {
-            return "Person not found";
-        }
-
-        DogResponse[] dogResponseArray = webClient.get()
-                .uri("http://" + dogServiceBaseUrl + "/api/dog",
-                        uriBuilder -> uriBuilder.queryParam("id", historyRequest.getDogId()).build())
-                .retrieve()
-                .bodyToMono(DogResponse[].class)
-                .block();
-        if (dogResponseArray == null || dogResponseArray.length == 0) {
-            return "Dog not found";
+        String validationResult = validateHistoryRequest(historyRequest);
+        if (validationResult != null) {
+            return validationResult;
         }
 
         History history = History.builder()
@@ -77,6 +51,32 @@ public class HistoryService {
                 .toList();
     }
 
+    public String updateHistory(Long id, HistoryRequest historyRequest) {
+        History existingHistory = historyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("History not found with ID: " + id));
+
+        String validationResult = validateHistoryRequest(historyRequest);
+        if (validationResult != null) {
+            return validationResult;
+        }
+
+        existingHistory.setCompetitionId(historyRequest.getCompetitionId());
+        existingHistory.setPersonId(historyRequest.getPersonId());
+        existingHistory.setDogId(historyRequest.getDogId());
+        existingHistory.setProgram(historyRequest.getProgram());
+        existingHistory.setScore(historyRequest.getScore());
+
+        historyRepository.save(existingHistory);
+
+        return "History updated successfully with ID: " + existingHistory.getId();
+    }
+
+    public void deleteHistory(Long id) {
+        History existingHistory = historyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("History not found with ID: " + id));
+        historyRepository.delete(existingHistory);
+    }
+
     private HistoryResponse mapToHistoryResponse(History history) {
         return HistoryResponse.builder()
                 .id(history.getId())
@@ -86,5 +86,61 @@ public class HistoryService {
                 .dogId(history.getDogId())
                 .score(history.getScore())
                 .build();
+    }
+
+    // ------------------- Validation -------------------
+    private String validateHistoryRequest(HistoryRequest request) {
+        String result;
+
+        result = validateCompetition(request.getCompetitionId());
+        if (result != null) return result;
+
+        result = validatePerson(request.getPersonId());
+        if (result != null) return result;
+
+        result = validateDog(request.getDogId());
+        return result;
+    }
+
+    private String validateCompetition(String competitionId) {
+        CompetitionResponse[] responses = webClient.get()
+                .uri("http://" + competitionServiceBaseUrl + "/api/competition",
+                        uriBuilder -> uriBuilder.queryParam("id", competitionId).build())
+                .retrieve()
+                .bodyToMono(CompetitionResponse[].class)
+                .block();
+
+        if (responses == null || responses.length == 0) {
+            return "Competition not found";
+        }
+        return null;
+    }
+
+    private String validatePerson(String personId) {
+        PersonResponse[] responses = webClient.get()
+                .uri("http://" + personServiceBaseUrl + "/api/person",
+                        uriBuilder -> uriBuilder.queryParam("id", personId).build())
+                .retrieve()
+                .bodyToMono(PersonResponse[].class)
+                .block();
+
+        if (responses == null || responses.length == 0) {
+            return "Person not found";
+        }
+        return null;
+    }
+
+    private String validateDog(String dogId) {
+        DogResponse[] responses = webClient.get()
+                .uri("http://" + dogServiceBaseUrl + "/api/dog",
+                        uriBuilder -> uriBuilder.queryParam("id", dogId).build())
+                .retrieve()
+                .bodyToMono(DogResponse[].class)
+                .block();
+
+        if (responses == null || responses.length == 0) {
+            return "Dog not found";
+        }
+        return null;
     }
 }

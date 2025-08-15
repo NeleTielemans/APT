@@ -29,4 +29,16 @@ public class HistoryController {
     public List<HistoryResponse> getAllHistories() {
         return historyService.getAllHistories();
     }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public String updateHistory(@PathVariable Long id, @RequestBody HistoryRequest historyRequest) {
+        return historyService.updateHistory(id, historyRequest);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteHistory(@PathVariable Long id) {
+        historyService.deleteHistory(id);
+    }
 }
