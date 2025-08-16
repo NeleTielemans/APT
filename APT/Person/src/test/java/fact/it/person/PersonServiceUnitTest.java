@@ -36,10 +36,24 @@ public class PersonServiceUnitTest {
 		request.setLastName("Doe");
 		request.setEmail("john.doe@example.com");
 
+		Person savedPerson = Person.builder()
+				.id("1")
+				.firstName(request.getFirstName())
+				.lastName(request.getLastName())
+				.email(request.getEmail())
+				.build();
+
+		when(personRepository.save(any(Person.class))).thenReturn(savedPerson);
+
 		// Act
-		personService.createPerson(request);
+		PersonResponse response = personService.createPerson(request);
 
 		// Assert
+		assertNotNull(response);
+		assertEquals("John", response.getFirstName());
+		assertEquals("Doe", response.getLastName());
+		assertEquals("john.doe@example.com", response.getEmail());
+
 		verify(personRepository, times(1)).save(any(Person.class));
 	}
 

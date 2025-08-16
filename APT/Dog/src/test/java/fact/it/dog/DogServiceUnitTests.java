@@ -38,10 +38,28 @@ class DogServiceUnitTests {
         dogRequest.setGender("Male");
         dogRequest.setOwnerId("owner1");
 
+        Dog savedDog = Dog.builder()
+                .id("1")
+                .chipnr(dogRequest.getChipnr())
+                .name(dogRequest.getName())
+                .breed(dogRequest.getBreed())
+                .gender(dogRequest.getGender())
+                .ownerId(dogRequest.getOwnerId())
+                .build();
+
+        when(dogRepository.save(any(Dog.class))).thenReturn(savedDog);
+
         // Act
-        dogService.createDog(dogRequest);
+        DogResponse response = dogService.createDog(dogRequest);
 
         // Assert
+        assertNotNull(response);
+        assertEquals("12345", response.getChipnr());
+        assertEquals("Buddy", response.getName());
+        assertEquals("Labrador", response.getBreed());
+        assertEquals("Male", response.getGender());
+        assertEquals("owner1", response.getOwnerId());
+
         verify(dogRepository, times(1)).save(any(Dog.class));
     }
 
