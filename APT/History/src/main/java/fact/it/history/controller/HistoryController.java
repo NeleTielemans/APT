@@ -20,7 +20,7 @@ public class HistoryController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public String addHistory(@RequestBody HistoryRequest historyRequest) {
+    public HistoryResponse addHistory(@RequestBody HistoryRequest historyRequest) {
         return historyService.createNewHistory(historyRequest);
     }
 
@@ -32,7 +32,7 @@ public class HistoryController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public String updateHistory(@PathVariable Long id, @RequestBody HistoryRequest historyRequest) {
+    public HistoryResponse updateHistory(@PathVariable Long id, @RequestBody HistoryRequest historyRequest) {
         return historyService.updateHistory(id, historyRequest);
     }
 

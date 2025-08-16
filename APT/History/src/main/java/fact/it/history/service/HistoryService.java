@@ -6,8 +6,10 @@ import fact.it.history.repository.HistoryRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -25,11 +27,10 @@ public class HistoryService {
     @Value("${competitionservice.baseurl}")
     private String competitionServiceBaseUrl;
 
-    public String createNewHistory(HistoryRequest historyRequest) {
-        String validationResult = validateHistoryRequest(historyRequest);
-        if (validationResult != null) {
-            return validationResult;
-        }
+    public HistoryResponse createNewHistory(HistoryRequest historyRequest) {
+        validateCompetition(historyRequest.getCompetitionId());
+        validatePerson(historyRequest.getPersonId());
+        validateDog(historyRequest.getDogId());
 
         History history = History.builder()
                 .competitionId(historyRequest.getCompetitionId())
@@ -39,10 +40,10 @@ public class HistoryService {
                 .score(historyRequest.getScore())
                 .build();
 
-        historyRepository.save(history);
-        return "New history record saved with ID: " + history.getId();
-
+        History savedHistory = historyRepository.save(history);
+        return mapToHistoryResponse(savedHistory);
     }
+
 
     public List<HistoryResponse> getAllHistories() {
         return historyRepository.findAll()
@@ -51,14 +52,13 @@ public class HistoryService {
                 .toList();
     }
 
-    public String updateHistory(Long id, HistoryRequest historyRequest) {
+    public HistoryResponse updateHistory(Long id, HistoryRequest historyRequest) {
         History existingHistory = historyRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("History not found with ID: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "History not found with ID: " + id));
 
-        String validationResult = validateHistoryRequest(historyRequest);
-        if (validationResult != null) {
-            return validationResult;
-        }
+        validateCompetition(historyRequest.getCompetitionId());
+        validatePerson(historyRequest.getPersonId());
+        validateDog(historyRequest.getDogId());
 
         existingHistory.setCompetitionId(historyRequest.getCompetitionId());
         existingHistory.setPersonId(historyRequest.getPersonId());
@@ -66,10 +66,10 @@ public class HistoryService {
         existingHistory.setProgram(historyRequest.getProgram());
         existingHistory.setScore(historyRequest.getScore());
 
-        historyRepository.save(existingHistory);
-
-        return "History updated successfully with ID: " + existingHistory.getId();
+        History updatedHistory = historyRepository.save(existingHistory);
+        return mapToHistoryResponse(updatedHistory);
     }
+
 
     public void deleteHistory(Long id) {
         History existingHistory = historyRepository.findById(id)
@@ -89,20 +89,7 @@ public class HistoryService {
     }
 
     // ------------------- Validation -------------------
-    private String validateHistoryRequest(HistoryRequest request) {
-        String result;
-
-        result = validateCompetition(request.getCompetitionId());
-        if (result != null) return result;
-
-        result = validatePerson(request.getPersonId());
-        if (result != null) return result;
-
-        result = validateDog(request.getDogId());
-        return result;
-    }
-
-    private String validateCompetition(String competitionId) {
+    private void validateCompetition(String competitionId) {
         CompetitionResponse[] responses = webClient.get()
                 .uri("http://" + competitionServiceBaseUrl + "/api/competition",
                         uriBuilder -> uriBuilder.queryParam("id", competitionId).build())
@@ -111,12 +98,11 @@ public class HistoryService {
                 .block();
 
         if (responses == null || responses.length == 0) {
-            return "Competition not found";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Competition not found with ID: " + competitionId);
         }
-        return null;
     }
 
-    private String validatePerson(String personId) {
+    private void validatePerson(String personId) {
         PersonResponse[] responses = webClient.get()
                 .uri("http://" + personServiceBaseUrl + "/api/person",
                         uriBuilder -> uriBuilder.queryParam("id", personId).build())
@@ -125,12 +111,11 @@ public class HistoryService {
                 .block();
 
         if (responses == null || responses.length == 0) {
-            return "Person not found";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Person not found with ID: " + personId);
         }
-        return null;
     }
 
-    private String validateDog(String dogId) {
+    private void validateDog(String dogId) {
         DogResponse[] responses = webClient.get()
                 .uri("http://" + dogServiceBaseUrl + "/api/dog",
                         uriBuilder -> uriBuilder.queryParam("id", dogId).build())
@@ -139,8 +124,7 @@ public class HistoryService {
                 .block();
 
         if (responses == null || responses.length == 0) {
-            return "Dog not found";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dog not found with ID: " + dogId);
         }
-        return null;
     }
 }
