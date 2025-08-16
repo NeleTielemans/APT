@@ -20,6 +20,7 @@ data:
       - job_name: 'api-gateway'
         metrics_path: '/actuator/prometheus'
         scrape_interval: 5s
+        scrape_timeout: 60s
         static_configs:
           - targets: ['api-gateway:8080', 'dog-service:8080', 'person-service:8080', 'competition-service:8080', 'history-service:8080']
 ---
