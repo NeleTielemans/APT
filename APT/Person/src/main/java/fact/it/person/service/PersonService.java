@@ -12,13 +12,9 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PersonService {
     private final PersonRepository personRepository;
-
-    PersonService(PersonRepository personRepository) {
-        this.personRepository = personRepository;
-        System.out.println("person service here");
-    }
 
     public PersonResponse updatePerson(String id, PersonRequest personRequest) {
         Person person = personRepository.findById(id)
