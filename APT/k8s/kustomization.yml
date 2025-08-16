@@ -1,0 +1,7 @@
+resources:
+  - dog-service.yml
+  - person-service.yml
+  - competition-service.yml
+  - history-service.yml
+  - api-gateway.yml
+  - mongo-dbs.yml
