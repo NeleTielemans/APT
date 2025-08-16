@@ -18,8 +18,8 @@ public class PersonController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void createPerson(@RequestBody PersonRequest personRequest) {
-        personService.createPerson(personRequest);
+    public PersonResponse createPerson(@RequestBody PersonRequest personRequest) {
+        return personService.createPerson(personRequest);
     }
 
     @GetMapping

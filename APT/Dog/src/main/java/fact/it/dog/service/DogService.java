@@ -26,7 +26,7 @@ public class DogService {
         return dogs.stream().map(this::mapToDogResponse).toList();
     }
 
-    public void createDog(DogRequest dogRequest) {
+    public DogResponse createDog(DogRequest dogRequest) {
         Dog dog = Dog.builder()
                 .chipnr(dogRequest.getChipnr())
                 .name(dogRequest.getName())
@@ -35,7 +35,8 @@ public class DogService {
                 .ownerId(dogRequest.getOwnerId())
                 .build();
 
-        dogRepository.save(dog);
+        Dog savedDag = dogRepository.save(dog);
+        return mapToDogResponse(savedDag);
     }
 
     private DogResponse mapToDogResponse(Dog dog) {

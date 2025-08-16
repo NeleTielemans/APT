@@ -41,14 +41,15 @@ public class PersonService {
         return persons.stream().map(this::mapToPersonResponse).toList();
     }
 
-    public void createPerson(PersonRequest personRequest) {
+    public PersonResponse createPerson(PersonRequest personRequest) {
         Person person = Person.builder()
                 .firstName(personRequest.getFirstName())
                 .lastName(personRequest.getLastName())
                 .email(personRequest.getEmail())
                 .build();
 
-        personRepository.save(person);
+        Person savedPerson = personRepository.save(person);
+        return mapToPersonResponse(savedPerson);
     }
 
     private PersonResponse mapToPersonResponse(Person person) {

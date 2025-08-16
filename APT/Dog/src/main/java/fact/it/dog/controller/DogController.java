@@ -18,8 +18,8 @@ public class DogController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void createDog(@RequestBody DogRequest dogRequest) {
-        dogService.createDog(dogRequest);
+    public DogResponse createDog(@RequestBody DogRequest dogRequest) {
+        return dogService.createDog(dogRequest);
     }
 
     @GetMapping
