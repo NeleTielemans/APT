@@ -1,11 +1,11 @@
 services:
   dogdb:
     image: mongo:6.0
-    container_name: dogdb
+    container_name: mongodog
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_DATABASE: dogdb
+      MONGO_INITDB_DATABASE: mongodog
     volumes:
       - mongodb_data:/data/db
 
