@@ -26,14 +26,15 @@ public class CompetitionService {
         return competitions.stream().map(this::mapToCompetitionResponse).toList();
     }
 
-    public void createCompetition(CompetitionRequest competition) {
+    public CompetitionResponse createCompetition(CompetitionRequest competition) {
         Competition newCompetition = Competition.builder()
                 .name(competition.getName())
                 .location(competition.getLocation())
                 .description(competition.getDescription())
                 .build();
 
-        competitionRepository.save(newCompetition);
+        Competition savedCompetition = competitionRepository.save(newCompetition);
+        return mapToCompetitionResponse(savedCompetition);
     }
 
     private CompetitionResponse mapToCompetitionResponse(Competition competition) {

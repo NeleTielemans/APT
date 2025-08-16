@@ -18,8 +18,8 @@ public class CompetitionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void createCompetition(@RequestBody CompetitionRequest competitionRequest) {
-        competitionService.createCompetition(competitionRequest);
+    public CompetitionResponse createCompetition(@RequestBody CompetitionRequest competitionRequest) {
+        return competitionService.createCompetition(competitionRequest);
     }
 
     @GetMapping
