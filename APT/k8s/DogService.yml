@@ -1,0 +1,99 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dogcompetitions
+
+# ===== Persistent Volumes for MongoDB =====
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dogdb-pvc
+  namespace: dogcompetitions
+spec:
+  accessModes: [ "ReadWriteOnce" ]
+  resources:
+    requests:
+      storage: 1Gi
+
+# ===== dogdb =====
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dogdb
+  namespace: dogcompetitions
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dogdb
+  template:
+    metadata:
+      labels:
+        app: dogdb
+    spec:
+      containers:
+        - name: dogdb
+          image: mongo:6.0
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: dogdb-storage
+              mountPath: /data/db
+      volumes:
+        - name: dogdb-storage
+          persistentVolumeClaim:
+            claimName: dogdb-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dogdb
+  namespace: dogcompetitions
+spec:
+  selector:
+    app: dogdb
+  ports:
+    - port: 27017
+      targetPort: 27017
+
+# ===== dog-service =====
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dog-service
+  namespace: dogcompetitions
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dog-service
+  template:
+    metadata:
+      labels:
+        app: dog-service
+    spec:
+      containers:
+        - name: dog-service
+          image: nelet/dog-service:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MONGODB_PORT
+              value: "27017"
+            - name: MONGODB_HOST
+              value: "dogdb"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dog-service
+  namespace: dogcompetitions
+spec:
+  selector:
+    app: dog-service
+  ports:
+    - port: 8080
+      targetPort: 8080

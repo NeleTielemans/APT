@@ -1,0 +1,120 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dogcompetitions
+
+# ===== Persistent Volumes for MongoDB =====
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-history-pvc
+  namespace: dogcompetitions
+spec:
+  accessModes: [ "ReadWriteOnce" ]
+  resources:
+    requests:
+      storage: 2Gi
+
+# ===== mysql-history =====
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-history
+  namespace: dogcompetitions
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-history
+  template:
+    metadata:
+      labels:
+        app: mysql-history
+    spec:
+      containers:
+        - name: mysql-history
+          image: mysql:8.0
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_USER
+              value: "Test"
+            - name: MYSQL_PASSWORD
+              value: "Test@123"
+            - name: MYSQL_DATABASE
+              value: "historydb"
+            - name: MYSQL_ROOT_PASSWORD
+              value: "rootabc123"
+          volumeMounts:
+            - name: mysql-history-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-history-storage
+          persistentVolumeClaim:
+            claimName: mysql-history-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-history
+  namespace: dogcompetitions
+spec:
+  selector:
+    app: mysql-history
+  ports:
+    - port: 3306
+      targetPort: 3306
+
+# ===== history-service =====
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: history-service
+  namespace: dogcompetitions
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: history-service
+  template:
+    metadata:
+      labels:
+        app: history-service
+    spec:
+      containers:
+        - name: history-service
+          image: nelet/history-service:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MYSQL_DB_HOST
+              value: "mysql-history"
+            - name: MYSQL_DB_PORT
+              value: "3306"
+            - name: MYSQL_DB_DATABASE
+              value: "historydb"
+            - name: MYSQL_DB_USER
+              value: "root"
+            - name: MYSQL_DB_PASSWORD
+              value: "rootabc123"
+            - name: DOG_SERVICE_BASEURL
+              value: "dog-service:8080"
+            - name: PERSON_SERVICE_BASEURL
+              value: "person-service:8080"
+            - name: COMPETITION_SERVICE_BASEURL
+              value: "competition-service:8080"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: history-service
+  namespace: dogcompetitions
+spec:
+  selector:
+    app: history-service
+  ports:
+    - port: 8082
+      targetPort: 8080
