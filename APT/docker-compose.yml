@@ -137,10 +137,22 @@ services:
     networks:
       - backend
 
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - prometheus-data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml 
+    networks:
+      - backend
+
 volumes:
   person_mongo_data:
   dog_mongo_data:
   competition_mongo_data:
+  prometheus-data:
+  
 
 networks:
   backend:
