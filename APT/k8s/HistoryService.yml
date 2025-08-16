@@ -117,5 +117,5 @@ spec:
   selector:
     app: history-service
   ports:
-    - port: 8082
+    - port: 8080
       targetPort: 8080
