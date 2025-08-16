@@ -36,6 +36,12 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- Spring Boot Actuator -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
 		<!-- MongoDB Support -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -48,6 +54,13 @@
 			<artifactId>lombok</artifactId>
 			<version>1.18.30</version>
 			<scope>provided</scope>
+		</dependency>
+
+		<!-- Micrometer Prometheus registry -->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- Devtools -->

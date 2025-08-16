@@ -1,11 +1,11 @@
 services:
   persondb:
     image: mongo:6.0
-    container_name: persondb
+    container_name: mongoperson
     ports:
       - "27018:27017"
     environment:
-      MONGO_INITDB_DATABASE: persondb
+      MONGO_INITDB_DATABASE: mongoperson
     volumes:
       - mongodb_data:/data/db
 
