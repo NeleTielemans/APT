@@ -113,7 +113,6 @@ metadata:
   name: history-service
   namespace: dogcompetitions
 spec:
-  type: LoadBalancer
   selector:
     app: history-service
   ports:
