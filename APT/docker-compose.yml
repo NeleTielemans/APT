@@ -147,6 +147,9 @@ services:
     depends_on:
       - dog-service
       - api-gateway
+      - history-service
+      - person-service
+      - competition-service
     networks:
       - backend
 
