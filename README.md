@@ -28,9 +28,9 @@ Het project is opgebouwd uit verschillende microservices en ondersteunende compo
 ## Hosting & Toegang
 Het volledige project is gedeployed in **Kubernetes**. Om publieke toegang mogelijk te maken zijn tunnels voorzien naar de API, Prometheus en Grafana.
 
-- [API Gateway] https://aptneleapigateway.krejo.be/
+- [API Gateway] https://aptneleapigateway.krejo.be
 - [Prometheus] https://aptneleprometheus.krejo.be 
-- [Grafana] https://aptnelegrafana.krejo.be/  (username: admin, password: admin)
+- [Grafana] https://aptnelegrafana.krejo.be  (username: admin, password: admin)
 
 
 ## Schema
