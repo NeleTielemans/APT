@@ -141,6 +141,22 @@ spring:
           filters:
             - SetPath=/api/history
 
+        - id: history-service-update
+          uri: http://${HISTORY_SERVICE_BASEURL:localhost:8085}
+          predicates:
+            - Path=/histories/{id}
+            - Method=PUT
+          filters:
+            - SetPath=/api/history/{id}
+
+        - id: history-service-delete
+          uri: http://${HISTORY_SERVICE_BASEURL:localhost:8085}
+          predicates:
+            - Path=/histories/{id}
+            - Method=DELETE
+          filters:
+            - SetPath=/api/history/{id}
+
 management:
   endpoints:
     web:
