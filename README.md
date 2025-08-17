@@ -1,0 +1,1 @@
+![alt text](/Screenshots/dogCompetitions.drawio.png)
