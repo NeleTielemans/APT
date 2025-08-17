@@ -12,7 +12,6 @@ Er zijn vier kernentiteiten:
 
 Deze structuur maakt het mogelijk om een volledig overzicht te krijgen van de deelnames van honden en personen aan wedstrijden.  
 
----
 
 ## Microservices & Componenten
 Het project is opgebouwd uit verschillende microservices en ondersteunende componenten:
@@ -25,25 +24,21 @@ Het project is opgebouwd uit verschillende microservices en ondersteunende compo
 - **Prometheus** – monitoring van de microservices.  
 - **Grafana** – visualisatie van statistieken en dashboards.  
 
----
 
 ## Hosting & Toegang
 Het volledige project is gedeployed in **Kubernetes**. Om publieke toegang mogelijk te maken zijn tunnels voorzien naar de API, Prometheus en Grafana.
 
-- [API Gateway](link naar jouw API)  
-- [Prometheus](link naar jouw Prometheus)  
-- [Grafana](link naar jouw Grafana)  
+- [API Gateway] https://aptneleapigateway.krejo.be/
+- [Prometheus] https://aptneleprometheus.krejo.be 
+- [Grafana] https://aptnelegrafana.krejo.be/ 
 
----
 
 ## Schema
 ![Schema Hondenschool Wedstrijden](/Screenshots/dogCompetitions.drawio.png)
 
----
 
 ## Uitbreidingen
 - Hosting in Kubernetes  
 - Tunnels voor publieke toegang  
 - Integratie van Prometheus en Grafana voor monitoring en visualisatie  
 
----
