@@ -43,3 +43,27 @@ Het volledige project is gedeployed in **Kubernetes**. Om publieke toegang mogel
 - Integratie van Prometheus voor monitoring 
 - Integratie van Grafana voor visualisatie van de monitoring   
 
+## Screenshots
+Deze requests zijn allemaal uitgevoerd op de api-gateway en worden daardoor gemapt naar de corresponderende microservices.
+
+![screenshot](/Screenshots/dog-POST.png)
+![screenshot](/Screenshots/dog-PUT.png)
+![screenshot](/Screenshots/dog-GET.png)
+![screenshot](/Screenshots/dog-GET%20all.png)
+
+
+![screenshot](/Screenshots/person-POST.png)
+![screenshot](/Screenshots/person-PUT.png)
+![screenshot](/Screenshots/person-GET.png)
+![screenshot](/Screenshots/person-GET%20all.png)
+
+![screenshot](/Screenshots/competition-POST.png)
+![screenshot](/Screenshots/competition-PUT.png)
+![screenshot](/Screenshots/competition-GET.png)
+![screenshot](/Screenshots/competition-GET%20all.png)
+
+
+![screenshot](/Screenshots/history-POST.png)
+![screenshot](/Screenshots/history-PUT.png)
+![screenshot](/Screenshots/history-DELETE.png.png)
+![screenshot](/Screenshots/history-GET.png)
