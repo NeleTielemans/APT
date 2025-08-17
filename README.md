@@ -30,7 +30,7 @@ Het volledige project is gedeployed in **Kubernetes**. Om publieke toegang mogel
 
 - [API Gateway] https://aptneleapigateway.krejo.be/
 - [Prometheus] https://aptneleprometheus.krejo.be 
-- [Grafana] https://aptnelegrafana.krejo.be/ 
+- [Grafana] https://aptnelegrafana.krejo.be/  (username: admin, password: admin)
 
 
 ## Schema
