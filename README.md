@@ -40,5 +40,6 @@ Het volledige project is gedeployed in **Kubernetes**. Om publieke toegang mogel
 ## Uitbreidingen
 - Hosting in Kubernetes  
 - Tunnels voor publieke toegang  
-- Integratie van Prometheus en Grafana voor monitoring en visualisatie  
+- Integratie van Prometheus voor monitoring 
+- Integratie van Grafana voor visualisatie van de monitoring   
 
