@@ -22,7 +22,7 @@ Het project is opgebouwd uit verschillende microservices en ondersteunende compo
 - **History-service** – legt de koppelingen vast tussen hond, persoon en wedstrijd.  
 - **API Gateway** – fungeert als toegangspunt tot alle microservices.  
 - **Prometheus** – monitoring van de microservices.  
-- **Grafana** – visualisatie van statistieken en dashboards.  
+- **Grafana** – visualisatie van de monitoring.
 
 
 ## Hosting & Toegang
