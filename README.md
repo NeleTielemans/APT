@@ -20,7 +20,7 @@ Het project is opgebouwd uit verschillende microservices en ondersteunende compo
 - **Persoon-service** – beheer van personen en hun gegevens.  
 - **Wedstrijd-service** – beheer van wedstrijden.  
 - **History-service** – legt de koppelingen vast tussen hond, persoon en wedstrijd.  
-- **API Gateway** – fungeert als toegangspunt tot alle microservices.  
+- **API Gateway** – fungeert als toegangspunt tot alle microservices. (met auth via GCP OAuht2)
 - **Prometheus** – monitoring van de microservices.  
 - **Grafana** – visualisatie van de monitoring.
 
