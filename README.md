@@ -67,3 +67,11 @@ Deze requests zijn allemaal uitgevoerd op de api-gateway en worden daardoor gema
 ![screenshot](/Screenshots/history-PUT.png)
 ![screenshot](/Screenshots/history-DELETE.png)
 ![screenshot](/Screenshots/history-GET.png)
+
+### prometheus
+
+![screenshot](/Screenshots/prometheus.png)
+
+### grafana
+
+![screenshot](/Screenshots/grafana.png)
